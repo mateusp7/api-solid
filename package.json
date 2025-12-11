@@ -1,0 +1,33 @@
+{
+	"name": "api-solid",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"start:dev": "tsx watch src/server.ts",
+		"start": "node build/server.cjs",
+		"build": "tsup src/server.ts --out-dir build",
+		"lint": "biome check --write"
+	},
+	"module": "",
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.14.0",
+	"devDependencies": {
+		"@biomejs/biome": "2.3.8",
+		"@types/node": "24.10.2",
+		"tsup": "8.5.1",
+		"tsx": "4.21.0",
+		"typescript": "5.9.3",
+		"prisma": "7.1.0"
+	},
+	"dependencies": {
+		"@prisma/adapter-pg": "7.1.0",
+		"@prisma/client": "7.1.0",
+		"dotenv": "17.2.3",
+		"fastify": "5.6.2",
+		"zod": "4.1.13"
+	}
+}

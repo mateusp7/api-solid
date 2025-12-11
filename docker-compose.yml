@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: apisolid
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: apisolid
+      POSTGRES_PASSWORD: apisolid
+      POSTGRES_DB: api_solid_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - apisolid-data:/var/lib/postgresql/data
+volumes:
+  apisolid-data:
