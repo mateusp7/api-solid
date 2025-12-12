@@ -93,10 +93,29 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.CheckInScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  validated_at: 'validated_at',
+  user_id: 'user_id',
+  gym_id: 'gym_id'
+};
+
+exports.Prisma.GymScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  phone: 'phone',
+  latitude: 'latitude',
+  longitude: 'longitude'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  email: 'email'
+  email: 'email',
+  password_hash: 'password_hash',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -109,8 +128,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
+  CheckIn: 'CheckIn',
+  Gym: 'Gym',
   User: 'User'
 };
 /**
@@ -121,10 +147,10 @@ const config = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider   = \"prisma-client-js\"\n  engineType = \"client\"\n  output     = \"../generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id    String @id @default(uuid())\n  name  String\n  email String @unique\n\n  @@map(\"users\")\n}\n"
+  "inlineSchema": "model CheckIn {\n  id           String    @id @default(uuid())\n  created_at   DateTime  @default(now())\n  validated_at DateTime?\n\n  user    User   @relation(fields: [user_id], references: [id])\n  user_id String\n  gym     Gym    @relation(fields: [gym_id], references: [id])\n  gym_id  String\n\n  @@map(\"check_ins\")\n}\n\nmodel Gym {\n  id          String  @id @default(uuid())\n  title       String\n  description String?\n  phone       String?\n  latitude    Decimal\n  longitude   Decimal\n\n  checkIns CheckIn[]\n\n  @@map(\"gyms\")\n}\n\ngenerator client {\n  provider   = \"prisma-client-js\"\n  engineType = \"client\"\n  output     = \"../generated/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id            String   @id @default(uuid())\n  name          String\n  email         String   @unique\n  password_hash String\n  created_at    DateTime @default(now())\n\n  checkIns CheckIn[]\n\n  @@map(\"users\")\n}\n"
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"users\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"CheckIn\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"validated_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CheckInToUser\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"gym\",\"kind\":\"object\",\"type\":\"Gym\",\"relationName\":\"CheckInToGym\"},{\"name\":\"gym_id\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":\"check_ins\"},\"Gym\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"latitude\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"longitude\",\"kind\":\"scalar\",\"type\":\"Decimal\"},{\"name\":\"checkIns\",\"kind\":\"object\",\"type\":\"CheckIn\",\"relationName\":\"CheckInToGym\"}],\"dbName\":\"gyms\"},\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"checkIns\",\"kind\":\"object\",\"type\":\"CheckIn\",\"relationName\":\"CheckInToUser\"}],\"dbName\":\"users\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.compilerWasm = {
       getRuntime: async () => require('./query_compiler_bg.js'),

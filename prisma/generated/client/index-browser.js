@@ -120,10 +120,29 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.CheckInScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  validated_at: 'validated_at',
+  user_id: 'user_id',
+  gym_id: 'gym_id'
+};
+
+exports.Prisma.GymScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  phone: 'phone',
+  latitude: 'latitude',
+  longitude: 'longitude'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  email: 'email'
+  email: 'email',
+  password_hash: 'password_hash',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -136,8 +155,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
+  CheckIn: 'CheckIn',
+  Gym: 'Gym',
   User: 'User'
 };
 
