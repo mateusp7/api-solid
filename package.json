@@ -8,7 +8,9 @@
 		"start:dev": "tsx watch src/server.ts",
 		"start": "node build/server.cjs",
 		"build": "tsup src/server.ts --out-dir build",
-		"lint": "biome check --write"
+		"lint": "biome check --write",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"module": "",
 	"keywords": [],
@@ -21,7 +23,9 @@
 		"prisma": "7.1.0",
 		"tsup": "8.5.1",
 		"tsx": "4.21.0",
-		"typescript": "5.9.3"
+		"typescript": "5.9.3",
+		"vite-tsconfig-paths": "6.0.1",
+		"vitest": "4.0.15"
 	},
 	"dependencies": {
 		"@prisma/adapter-pg": "7.1.0",
