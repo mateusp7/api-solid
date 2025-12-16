@@ -2,7 +2,6 @@ import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-c
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CheckInUseCase } from "./check-in";
-import { Decimal } from "@prisma/client/runtime/client";
 
 let checkInsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
@@ -16,12 +15,12 @@ describe("Check-in Use Case", () => {
 
 		gymsRepository.items.push({
 			id: "gym-01",
-			description: '',
-			phone: '',
-			latitude: new Decimal(0),
-			longitude: new Decimal(0),
-			title: 'JavaScript Gym'
-		})
+			description: "",
+			phone: "",
+			latitude: -20.15232,
+			longitude: -40.2358272,
+			title: "JavaScript Gym",
+		});
 
 		// Mockar tempo
 		vi.useFakeTimers();
@@ -83,5 +82,25 @@ describe("Check-in Use Case", () => {
 		});
 
 		expect(checkIn.id).toEqual(expect.any(String));
+	});
+
+	it("should not be able to check-in on distant gym", async () => {
+		gymsRepository.items.push({
+			id: "gym-02",
+			description: "",
+			phone: "",
+			latitude: -20.2165583,
+			longitude: -40.2808964,
+			title: "JavaScript Gym",
+		});
+
+		await expect(() =>
+			sut.execute({
+				gymId: "gym-02",
+				userId: "user-01",
+				userLatitude: -20.15232,
+				userLongitude: -40.2358272,
+			}),
+		).rejects.toBeInstanceOf(Error);
 	});
 });
