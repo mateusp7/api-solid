@@ -1,25 +1,27 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CheckInUseCase } from "./check-in";
+import { MaxNumberOfCheckInsError } from "./errors/max-number-of-check-ins-error";
+import { MaxDistanceError } from "./errors/max-distance-error";
 
 let checkInsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
 let sut: CheckInUseCase;
 
 describe("Check-in Use Case", () => {
-	beforeEach(() => {
+	beforeEach(async () => {
 		checkInsRepository = new InMemoryCheckInsRepository();
 		gymsRepository = new InMemoryGymsRepository();
 		sut = new CheckInUseCase(checkInsRepository, gymsRepository);
 
-		gymsRepository.items.push({
+		await gymsRepository.create({
 			id: "gym-01",
+			title: "JavaScript Gym",
 			description: "",
 			phone: "",
 			latitude: -20.15232,
 			longitude: -40.2358272,
-			title: "JavaScript Gym",
 		});
 
 		// Mockar tempo
@@ -59,7 +61,7 @@ describe("Check-in Use Case", () => {
 				userLatitude: -20.15232,
 				userLongitude: -40.2358272,
 			}),
-		).rejects.toBeInstanceOf(Error);
+		).rejects.toBeInstanceOf(MaxNumberOfCheckInsError);
 	});
 
 	it("should be able to check in twice but in different days", async () => {
@@ -101,6 +103,6 @@ describe("Check-in Use Case", () => {
 				userLatitude: -20.15232,
 				userLongitude: -40.2358272,
 			}),
-		).rejects.toBeInstanceOf(Error);
+		).rejects.toBeInstanceOf(MaxDistanceError);
 	});
 });
