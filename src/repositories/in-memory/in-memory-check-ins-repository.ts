@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import type { CheckIn, Prisma } from "prisma/generated/client";
 import type { CheckInsRepository } from "../check-ins-repository";
 
-const QUANTITY_ITEMS_PER_PAGE = 20
+const QUANTITY_ITEMS_PER_PAGE = 20;
 export class InMemoryCheckInsRepository implements CheckInsRepository {
   public checkIns: CheckIn[] = [];
 
@@ -25,10 +25,17 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
     return checkInOnSameDate;
   }
 
-  async fyndManyByUserId(userId: string, page: number) {
+  async findManyByUserId(userId: string, page: number) {
     return this.checkIns
-    .filter((checkIn) => checkIn.user_id === userId)
-    .slice((page - 1) * QUANTITY_ITEMS_PER_PAGE, page * QUANTITY_ITEMS_PER_PAGE)
+      .filter((checkIn) => checkIn.user_id === userId)
+      .slice(
+        (page - 1) * QUANTITY_ITEMS_PER_PAGE,
+        page * QUANTITY_ITEMS_PER_PAGE
+      );
+  }
+
+  async countByUserId(userId: string): Promise<number> {
+    return this.checkIns.filter((checkIn) => checkIn.user_id === userId).length;
   }
 
   async create(data: Prisma.CheckInUncheckedCreateInput) {
