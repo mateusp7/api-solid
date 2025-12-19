@@ -6,36 +6,34 @@ let gymsRepository: InMemoryGymsRepository;
 let sut: FetchNearbyGymsUseCase;
 
 describe("Fetch Nearby gyms Use Case", () => {
-  beforeEach(async () => {
-    gymsRepository = new InMemoryGymsRepository();
-    sut = new FetchNearbyGymsUseCase(gymsRepository);
-  });
+	beforeEach(async () => {
+		gymsRepository = new InMemoryGymsRepository();
+		sut = new FetchNearbyGymsUseCase(gymsRepository);
+	});
 
-  it("should be able to fetch nearby gyms", async () => {
-    await gymsRepository.create({
-      title: "Near Gym",
-      description: null,
-      phone: null,
-      latitude: -20.15232,
-      longitude: -40.2358272,
-    });
+	it("should be able to fetch nearby gyms", async () => {
+		await gymsRepository.create({
+			title: "Near Gym",
+			description: null,
+			phone: null,
+			latitude: -20.15232,
+			longitude: -40.2358272,
+		});
 
-    await gymsRepository.create({
-      title: "Far Gym",
-      description: null,
-      phone: null,
-      latitude: -20.3365641,
-      longitude: -40.3826864,
-    });
+		await gymsRepository.create({
+			title: "Far Gym",
+			description: null,
+			phone: null,
+			latitude: -20.3365641,
+			longitude: -40.3826864,
+		});
 
-    const { gyms } = await sut.execute({
-      userLatitude: -20.15232,
-      userLongitude: -40.2358272,
-    });
+		const { gyms } = await sut.execute({
+			userLatitude: -20.15232,
+			userLongitude: -40.2358272,
+		});
 
-    expect(gyms).toHaveLength(1);
-    expect(gyms).toEqual([
-      expect.objectContaining({ title: "Near Gym" }),
-    ]);
-  });
+		expect(gyms).toHaveLength(1);
+		expect(gyms).toEqual([expect.objectContaining({ title: "Near Gym" })]);
+	});
 });
