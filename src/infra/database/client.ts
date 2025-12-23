@@ -2,15 +2,27 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { env } from "@/env";
 import { PrismaClient } from "@/shared/prisma";
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+function makePrismaClient(connectionString = process.env.DATABASE_URL) {
+  if (!connectionString) throw new Error("DATABASE_URL is not defined");
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+  const url = new URL(connectionString);
+  const schema = url.searchParams.get("schema") ?? "public";
 
-export const prisma =
-	globalForPrisma.prisma ||
-	new PrismaClient({
-		adapter,
-		log: env.NODE_ENV === "dev" ? ["query", "error", "warn"] : ["error"],
-	});
+  // Workaround conhecido: setar schema explicitamente no adapter
+  const adapter = new PrismaPg({ connectionString }, { schema });
 
-if (env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+  return new PrismaClient({
+    adapter,
+    log: env.NODE_ENV === "dev" ? ["query", "error", "warn"] : ["error"],
+  });
+}
+
+declare global {
+  var __prisma: PrismaClient | undefined;
+}
+
+export const prisma = globalThis.__prisma ?? makePrismaClient();
+
+if (env.NODE_ENV === "dev") {
+  globalThis.__prisma = prisma;
+}

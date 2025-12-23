@@ -1,14 +1,37 @@
-import { fileURLToPath } from "node:url";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
-const srcPath = fileURLToPath(new URL("./src", import.meta.url));
-
 export default defineConfig({
-	plugins: [tsconfigPaths()],
-	resolve: {
-		alias: {
-			"@": srcPath,
-		},
-	},
+  plugins: [tsconfigPaths()],
+  resolve: {
+    alias: {
+      "@": "./src",
+    },
+  },
+  test: {
+    dir: "src",
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          dir: "src/use-cases",
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "e2e",
+          dir: "src/http/controllers",
+          environment:
+            "./prisma/vitest-environment-prisma/prisma-test-environment.ts",
+        },
+      },
+    ],
+    server: {
+      deps: {
+        external: [/prisma\/generated\/client/],
+      },
+    },
+  },
 });

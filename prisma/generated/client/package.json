@@ -3,6 +3,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "browser": "default.js",
+  "type": "commonjs",
   "exports": {
     "./client": {
       "require": {
