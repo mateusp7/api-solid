@@ -14,7 +14,8 @@
 		"test:watch": "vitest --project unit",
 		"test:watch:e2e": "vitest --project e2e",
 		"test:coverage": "vitest run --coverage",
-		"test:ui": "vitest --ui"
+		"test:ui": "vitest --ui",
+		"prepare": "husky"
 	},
 	"module": "",
 	"keywords": [],
@@ -27,6 +28,7 @@
 		"@types/supertest": "6.0.3",
 		"@vitest/coverage-v8": "4.0.16",
 		"@vitest/ui": "4.0.16",
+		"husky": "9.1.7",
 		"prisma": "7.1.0",
 		"supertest": "7.1.4",
 		"tsup": "8.5.1",
