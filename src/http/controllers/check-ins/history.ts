@@ -10,10 +10,10 @@ export async function history(request: FastifyRequest, reply: FastifyReply) {
 	const { page } = checkInHistoryQuerySchema.parse(request.query);
 
 	const fetchUserCheckInsHistoryUseCase = makeFetchUserCheckInsHistoryUseCase();
-	const checkIns = await fetchUserCheckInsHistoryUseCase.execute({
+	const { checkIns } = await fetchUserCheckInsHistoryUseCase.execute({
 		page,
 		userId: request.user.sub,
 	});
 
-	return reply.status(200).send({ gyms: checkIns });
+	return reply.status(200).send({ checkIns });
 }
