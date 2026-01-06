@@ -9,7 +9,9 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
 	const createCheckInBodySchema = z.object({
 		latitude: z.coerce.number().refine((latitude) => Math.abs(latitude) <= 90),
-		longitude: z.coerce.number().refine((longitude) => Math.abs(longitude) <= 180),
+		longitude: z.coerce
+			.number()
+			.refine((longitude) => Math.abs(longitude) <= 180),
 	});
 
 	const { gymId } = createCheckInParamsSchema.parse(request.params);
