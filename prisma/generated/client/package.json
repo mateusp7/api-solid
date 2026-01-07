@@ -1,9 +1,8 @@
 {
-  "name": "prisma-client-4a93fe9c80c1dfb46a8fb3df3f6f16403e546a98ca507a119f942f3666d1e193",
+  "name": "prisma-client-3b7102adc0697e11bc2bc09c38c226535ece1c4309a06d44234e9ff14f585bda",
   "main": "index.js",
   "types": "index.d.ts",
   "browser": "default.js",
-  "type": "commonjs",
   "exports": {
     "./client": {
       "require": {
