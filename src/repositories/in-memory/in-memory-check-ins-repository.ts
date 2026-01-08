@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import dayjs from "dayjs";
 import type { CheckIn, Prisma } from "prisma/generated/client";
 import type { CheckInsRepository } from "../check-ins-repository";

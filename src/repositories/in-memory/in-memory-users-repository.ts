@@ -1,4 +1,5 @@
-import type { Prisma, User } from "prisma/generated/client";
+import crypto from "node:crypto";
+import type { Prisma, Role, User } from "prisma/generated/client";
 import type { UsersRepository } from "../users-respository";
 
 export class InMemoryUsersRepository implements UsersRepository {
@@ -11,6 +12,7 @@ export class InMemoryUsersRepository implements UsersRepository {
 			email: data.email,
 			created_at: new Date(),
 			password_hash: data.password_hash,
+			role: data.role ?? ("USER" as Role),
 		};
 
 		this.users.push(user);
