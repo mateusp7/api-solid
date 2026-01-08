@@ -10,8 +10,6 @@ jobs:
     services:
       postgres:
         image: postgres:15
-        container_name: apisolid
-        restart: unless-stopped
         env:
           POSTGRES_USER: apisolid
           POSTGRES_PASSWORD: apisolid
