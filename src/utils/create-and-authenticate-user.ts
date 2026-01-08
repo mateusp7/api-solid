@@ -11,7 +11,7 @@ export async function createAndAuthenticateUser(
 		data: {
 			name: "John Doe",
 			email: "johndoe@example.com",
-			password_hash: await hash("123456", 6),
+			password_hash: await hash("1234567", 6),
 			role: isAdmin ? "ADMIN" : "MEMBER",
 		},
 	});
@@ -20,7 +20,7 @@ export async function createAndAuthenticateUser(
 		.post("/sessions")
 		.send({
 			email: "johndoe@example.com",
-			password: "123456",
+			password: "1234567",
 		});
 
 	const { token } = authenticateResponse.body;
