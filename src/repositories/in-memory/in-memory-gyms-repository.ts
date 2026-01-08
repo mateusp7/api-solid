@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import { Decimal } from "@prisma/client/runtime/client";
 import type { Gym, Prisma } from "prisma/generated/client";
 import { getDistanceBetweenCoordinates } from "@/utils/get-distance-between-coordinates";
